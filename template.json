@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Rodrigo Bedoya - (Apocalo)",
+  "classifications": [
+    "Clean Architecture",
+    "Microservices",
+    "Domain-Driven Design (DDD)",
+    "Command And Query Responsibility Segregation (CQRS)",
+    ".NET 8",
+    "API",
+    "MediatR",
+    "AutoMapper",
+    "EntityFrameworkCore",
+    "SQL Server",
+    "FluentValidation",
+    "ErrorOr",
+    "MSTest",
+    "Unit Test"
+  ],
+  "identity": "ScaffoldingMS",
+  "name": "Scaffolding Microservices API Template",
+  "shortName": "scaffoldingms",
+  "sourceName": "ScaffoldingMS",
+  "preferNameDirectory": true,
+  "tags": [
+    "Microservices",
+    "API Template",
+    "Clean Architecture",
+    "DDD",
+    "C#",
+    "Scaffolding"
+  ],
+  "symbols": {
+    "ApiName": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "Web.Api",
+      "description": "Name of the API project"
+    }
+  },
+  "postActions": [
+    {
+      "actionId": "6C0E4998-6A8E-4B02-BD27-BD7BA7C41F99",
+      "args": {
+        "executable": "dotnet",
+        "args": "restore"
+      },
+      "continueOnError": true,
+      "description": "Restoring NuGet packages...",
+      "manualInstructions": [
+        { "text": "Run 'dotnet restore' to restore NuGet packages." }
+      ]
+    }
+  ]
+}
