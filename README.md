@@ -42,8 +42,8 @@ This repository serves as a scaffold for creating efficient .NET microservices. 
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/yourprojectname.git
-   cd yourprojectname
+   git clone https://github.com/APOCALO/ScaffoldingMS.git
+   cd ScaffoldingMS
    ```
 
 2. **Install Dependencies**:
@@ -114,5 +114,5 @@ Special thanks to the .NET community and contributors who continuously improve t
 
 ---
 
-> Made with ❤️ by [Your Name](https://github.com/yourusername)
+> Made with ❤️ by [Apocalo](https://github.com/APOCALO)
     
