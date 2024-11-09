@@ -18,4 +18,10 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Customers\Commands\DeleteCustomer\" />
+    <Folder Include="Customers\Commands\UpdateCustomer\" />
+    <Folder Include="Customers\Queries\GetCustomerById\" />
+  </ItemGroup>
+
 </Project>

@@ -4,7 +4,7 @@ using Domain.ValueObjects;
 using ErrorOr;
 using MediatR;
 
-namespace Application.Customers.Commands
+namespace Application.Customers.Commands.CreateCustomer
 {
     public record CreateCustomerCommand : IRequest<ErrorOr<ApiResponse<Unit>>>
     {

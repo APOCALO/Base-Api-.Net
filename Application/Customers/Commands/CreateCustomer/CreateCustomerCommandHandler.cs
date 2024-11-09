@@ -8,7 +8,7 @@ using Infrastructure.Persistence.Interfaces;
 using MediatR;
 using System.Diagnostics;
 
-namespace Application.Customers.Commands
+namespace Application.Customers.Commands.CreateCustomer
 {
     internal sealed class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, ErrorOr<ApiResponse<Unit>>>
     {
