@@ -81,7 +81,7 @@ Refer to the [API Documentation](#) 📄 for a detailed list of available endpoi
 
 ```
 📁 YourProjectName
-├── 📁 API                  # Contains API layer
+├── 📁 Web.Api              # Contains API layer
 ├── 📁 Application          # Application layer with business logic, DTOs, and MediatR handlers
 ├── 📁 Domain               # Domain layer for entities, interfaces, and core logic
 └── 📁 Infrastructure       # Infrastructure layer for data access and external services
