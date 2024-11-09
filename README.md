@@ -1,118 +1,114 @@
 
-# 🌐 .NET 8 API Scaffold for Microservices 
+# 🌐 Proyecto Scaffold API .NET 8 para Microservicios
 
-![Platform](https://img.shields.io/badge/platform-.NET%208-blueviolet)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Clean Architecture](https://img.shields.io/badge/architecture-clean-blue)
+![Plataforma](https://img.shields.io/badge/platform-.NET%208-blueviolet)
+![Licencia](https://img.shields.io/badge/license-MIT-green)
+![Arquitectura limpia](https://img.shields.io/badge/architecture-clean-blue)
 ![DDD](https://img.shields.io/badge/pattern-DDD-orange)
 ![MediatR](https://img.shields.io/badge/tool-MediatR-red)
 
-> **Efficient API scaffold project for building microservices with .NET 8, leveraging Clean Architecture, Domain-Driven Design (DDD), and MediatR**. This project provides a highly extensible foundation for creating robust and scalable services with best practices in mind. 🎯
+> **Proyecto de andamiaje de API eficiente para crear microservicios con .NET 8, aprovechando la arquitectura limpia, el diseño orientado al dominio (DDD) y MediatR**. Este proyecto proporciona una base altamente extensible para crear servicios robustos y escalables teniendo en cuenta las mejores prácticas. 🎯
 
 ---
 
-## 🎯 Overview
+## 🎯 Visión general
 
-This repository serves as a scaffold for creating efficient .NET microservices. Designed with modularity and maintainability in mind, it provides a strong starting point for enterprise-grade applications. The project is based on:
+Este repositorio sirve de andamiaje para crear microservicios .NET eficientes. Diseñado teniendo en cuenta la modularidad y la mantenibilidad, proporciona un sólido punto de partida para aplicaciones de nivel empresarial. El proyecto se basa en:
 
-- 🏗 **Clean Architecture**: Encourages separation of concerns, making it easy to test, maintain, and expand.
-- 📦 **Domain-Driven Design (DDD)**: Helps structure complex business logic with domain-specific layers.
-- 📡 **MediatR**: Facilitates communication between components using the mediator pattern for cleaner, decoupled code.
-
----
-
-## 🛠 Features
-
-- **Modular Structure**: Provides organized layers for domain, application, and infrastructure.
-- **Highly Extensible**: Easily add new features and components without affecting the core structure.
-- **Efficient Performance**: Optimized codebase for responsive microservice applications.
-- **Best Practices**: Follows .NET and architectural best practices for clean and maintainable code.
+- 🏗 **Arquitectura limpia**: Fomenta la separación de preocupaciones, lo que facilita las pruebas, el mantenimiento y la ampliación.
+- 📦 **Diseño orientado al dominio (DDD)**: Ayuda a estructurar la lógica empresarial compleja con capas específicas del dominio.
+- 📡 **MediatR**: Facilita la comunicación entre componentes utilizando el patrón mediador para un código más limpio y desacoplado.
 
 ---
 
-## 🚀 Getting Started
+## 🛠 Características
 
-### Prerequisites
+- **Estructura modular**: Proporciona capas organizadas para dominio, aplicación e infraestructura.
+- **Altamente extensible**: Añade fácilmente nuevas funciones y componentes sin afectar a la estructura central.
+- **Rendimiento eficiente**: Código base optimizado para aplicaciones de microservicios con capacidad de respuesta.
+- **Mejores prácticas**: Sigue las mejores prácticas de .NET y de arquitectura para un código limpio y mantenible.
+
+---
+
+## 🚀 Primeros pasos
+
+### Requisitos previos
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (or another compatible database)
-- [Docker](https://www.docker.com/products/docker-desktop) (optional for containerized development)
+- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (u otra base de datos compatible)
+- [Docker](https://www.docker.com/products/docker-desktop) (opcional para el desarrollo en contenedores)
 
-### Installation
+### Instalación
 
-1. **Clone the Repository**:
+1. **Clonar el repositorio**:
    ```bash
    git clone https://github.com/APOCALO/ScaffoldingMS.git
    cd ScaffoldingMS
    ```
 
-2. **Install Dependencies**:
+2. **Instalar dependencias**:
    - Restore the dependencies by running:
      ```bash
      dotnet restore
      ```
 
-3. **Configure the Database**:
-   - Update `appsettings.json` with your database connection string.
-   - Run migrations to set up the initial database schema:
-     ```bash
-     dotnet ef database update
-     ```
+3. **Configurar la base de datos**:
+   - Actualiza `appsettings.json` con tu cadena de conexión a la base de datos.
 
-4. **Run the Application**:
+4. **Ejecutar la aplicación**:
    ```bash
    dotnet run
    ```
 
 ---
 
-## 📖 Usage
+## 📖 Utilización
 
-This scaffold is designed to support rapid API development. You can start creating new features by defining them in the **Domain** and **Application** layers, then exposing them through the **API** layer.
+Este scaffold está diseñado para apoyar el rápido desarrollo de APIs. Puede empezar a crear nuevas funciones definiéndolas en las capas **Dominio** y **Aplicación**, y exponiéndolas después a través de la capa **API**.
 
-- **Adding New Endpoints**: Define new endpoints by adding request/response DTOs in `Application` and handlers with MediatR.
-- **Extending the Domain**: Organize business logic within the `Domain` layer for reusability and consistency.
+- **Añadir nuevos Endpoints**: Definir nuevos endpoints añadiendo DTOs de petición/respuesta en `Application` y handlers con MediatR.
+- **Ampliar el dominio**: Organizar la lógica de negocio dentro de la capa `Domain` para la reutilización y la coherencia.
 
-Refer to the [API Documentation](#) 📄 for a detailed list of available endpoints and usage examples.
+Consulte la [Documentación de la API](#) 📄 para obtener una lista detallada de los puntos finales disponibles y ejemplos de uso.
 
 ---
 
-## 📂 Project Structure
+## 📂 Estructura del proyecto
 
 ```
 📁 YourProjectName
-├── 📁 Web.Api              # Contains API layer
-├── 📁 Application          # Application layer with business logic, DTOs, and MediatR handlers
-├── 📁 Domain               # Domain layer for entities, interfaces, and core logic
-└── 📁 Infrastructure       # Infrastructure layer for data access and external services
+├── 📁 Web.Api              # Contiene la capa API
+├── 📁 Application          # Capa de aplicación con lógica de negocio, DTOs y handlers MediatR
+├── 📁 Domain               # Capa de dominio para entidades, interfaces y lógica central
+└── 📁 Infrastructure       # Capa de infraestructura para acceso a datos y servicios externos
 ```
 
 ---
 
-## 🧑‍🤝‍🧑 Contributing
+## 🧑‍🤝‍🧑 Contribución
 
-Contributions are welcome! If you would like to contribute to this project, please:
+Las contribuciones son bienvenidas. Si desea contribuir a este proyecto, por favor:
 
-1. Fork the repository.
-2. Create a new branch (`feature/YourFeature`).
-3. Commit your changes.
-4. Push the branch and create a Pull Request.
+1. Fork del repositorio.
+2. Crear una nueva rama (`feature/YourFeature`).
+3. Commit de los cambios..
+4. Reliaza push a la rama y crea un Pull Request.
 
-Please read our [Contribution Guidelines](CONTRIBUTING.md) for more details. 🙌
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Por favor, lea nuestras [Directrices de contribución](CONTRIBUTING.md) para más detalles. 🙌
 
 ---
 
-## 🌟 Acknowledgements
+## 📄 Licencia
 
-Special thanks to the .NET community and contributors who continuously improve the ecosystem. 🙏
+Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
 
 ---
 
-> Made with ❤️ by [Apocalo](https://github.com/APOCALO)
+## 🌟 Agradecimientos
+
+Un agradecimiento especial a la comunidad .NET y a los colaboradores que mejoran continuamente el ecosistema. 🙏
+
+---
+
+> Hecho con ❤️ por [Apocalo](https://github.com/APOCALO)
     
