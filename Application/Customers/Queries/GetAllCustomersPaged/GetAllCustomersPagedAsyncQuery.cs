@@ -1,7 +1,6 @@
 ﻿using Application.Common;
 using Application.Customers.DTOs;
 using ErrorOr;
-using Infrastructure.Common;
 using MediatR;
 
 namespace Application.Customers.Queries.GetAllCustomersPaged

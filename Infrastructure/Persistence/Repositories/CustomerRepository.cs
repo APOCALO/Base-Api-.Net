@@ -1,6 +1,6 @@
-﻿using Domain.Customers;
-using Infrastructure.Common;
-using Infrastructure.Persistence.Interfaces;
+﻿using Application.Common;
+using Application.Common.Interfaces;
+using Domain.Customers;
 
 namespace Infrastructure.Persistence.Repositories
 {

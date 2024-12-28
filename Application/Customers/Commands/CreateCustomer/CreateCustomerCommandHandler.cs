@@ -1,10 +1,10 @@
 ﻿using Application.Common;
+using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Customers;
 using Domain.Primitives;
 using Domain.ValueObjects;
 using ErrorOr;
-using Infrastructure.Persistence.Interfaces;
 using MediatR;
 using System.Diagnostics;
 

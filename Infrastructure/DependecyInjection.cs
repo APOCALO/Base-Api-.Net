@@ -1,6 +1,6 @@
-﻿using Domain.Primitives;
+﻿using Application.Common.Interfaces;
+using Domain.Primitives;
 using Infrastructure.Persistence.Data;
-using Infrastructure.Persistence.Interfaces;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

@@ -1,8 +1,8 @@
 ﻿using Application.Common;
+using Application.Common.Interfaces;
 using Application.Customers.DTOs;
 using AutoMapper;
 using ErrorOr;
-using Infrastructure.Persistence.Interfaces;
 using MediatR;
 using System.Diagnostics;
 

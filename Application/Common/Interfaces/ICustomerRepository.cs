@@ -1,7 +1,6 @@
 ﻿using Domain.Customers;
-using Infrastructure.Common;
 
-namespace Infrastructure.Persistence.Interfaces
+namespace Application.Common.Interfaces
 {
     public interface ICustomerRepository
     {
