@@ -1,11 +1,16 @@
+using Application;
+using Infrastructure;
+using Web.Api;
+using Web.Api.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddApplication(builder.Configuration)
+    .AddInfrastructure(builder.Configuration)
+    .AddPresentation();
 
 var app = builder.Build();
 
@@ -14,7 +19,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    // Apply the database migrations
+    app.ApplyMigrations();
 }
+
+// Add the custom exception handler
+app.UseExceptionHandler("/api/errors");
+
+app.UseHealthChecks("/api/health");
 
 app.UseHttpsRedirection();
 

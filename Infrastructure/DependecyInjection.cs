@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Interfaces;
 using Domain.Primitives;
 using Infrastructure.Persistence.Data;
 using Infrastructure.Persistence.Repositories;
@@ -26,7 +26,6 @@ namespace Infrastructure
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
-
 
             // Repositories dependency inyection
             services.AddScoped<ICustomerRepository, CustomerRepository>();

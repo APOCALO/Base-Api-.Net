@@ -10,12 +10,17 @@ namespace Domain.ValueObjects
 
         public static PhoneNumber? Create(string value, string countryCode)
         {
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(countryCode))
             {
                 return null;
             }
 
             return ValidatePhoneNumberByCountry(value, countryCode) ? new PhoneNumber(value) : null;
+        }
+
+        public static PhoneNumber CreateWithoutCountryCode(string value)
+        {
+            return new PhoneNumber(value);
         }
 
         private static bool ValidatePhoneNumberByCountry(string value, string countryCode)

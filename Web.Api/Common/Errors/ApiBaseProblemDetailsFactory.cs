@@ -1,22 +1,28 @@
-﻿using ErrorOr;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Web.Api.Common.Http;
+using ErrorOr;
 
 namespace Web.Api.Common.Errors
 {
-    public class MeetyProblemDetailsFactory : ProblemDetailsFactory
+    public class ApiBaseProblemDetailsFactory : ProblemDetailsFactory
     {
         private readonly ApiBehaviorOptions _options;
 
-        public MeetyProblemDetailsFactory(ApiBehaviorOptions options)
+        public ApiBaseProblemDetailsFactory(ApiBehaviorOptions options)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
-        public override ProblemDetails CreateProblemDetails(HttpContext httpContext, int? statusCode = null, string? title = null, string? type = null, string? detail = null, string? instance = null)
+        public override ProblemDetails CreateProblemDetails(
+            HttpContext httpContext,
+            int? statusCode = null,
+            string? title = null,
+            string? type = null,
+            string? detail = null,
+            string? instance = null)
         {
             statusCode ??= 500;
 
@@ -53,7 +59,6 @@ namespace Web.Api.Common.Errors
             var problemDetails = new ValidationProblemDetails(modelStateDictionary)
             {
                 Status = statusCode,
-                Title = title,
                 Type = type,
                 Detail = detail,
                 Instance = instance
@@ -73,7 +78,6 @@ namespace Web.Api.Common.Errors
         {
             problemDetails.Status ??= statusCode;
 
-
             if (_options.ClientErrorMapping.TryGetValue(statusCode, out var clientErrorData))
             {
                 problemDetails.Title ??= clientErrorData.Title;
@@ -86,7 +90,7 @@ namespace Web.Api.Common.Errors
                 problemDetails.Extensions["traceId"] = traceId;
             }
 
-            var errors = httpContext?.Items[HttpContextItemKeys.Erros] as List<Error>;
+            var errors = httpContext?.Items[HttpContextItemKeys.Errors] as List<Error>;
 
             if (errors is not null)
             {

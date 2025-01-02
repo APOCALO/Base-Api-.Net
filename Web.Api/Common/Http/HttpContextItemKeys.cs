@@ -2,6 +2,6 @@
 {
     public static class HttpContextItemKeys
     {
-        public const string Erros = "erros";
+        public const string Errors = "errors";
     }
 }

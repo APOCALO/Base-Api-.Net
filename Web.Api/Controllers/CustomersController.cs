@@ -7,6 +7,7 @@ namespace Web.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class CustomersController : ApiBaseController
     {
         private readonly ISender _mediator;
@@ -38,7 +39,6 @@ namespace Web.Api.Controllers
         //    );
         //}
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCustomerCommand command)
         {
@@ -67,7 +67,7 @@ namespace Web.Api.Controllers
         //    var result = await _mediator.Send(command);
 
         //    return result.Match(
-        //        CustomerId => NoContent(),
+        //        Id => NoContent(),
         //        errors => Problem(errors)
         //    );
         //}
@@ -79,7 +79,7 @@ namespace Web.Api.Controllers
         //    var deleteResult = await _mediator.Send(new DeleteCustomerCommand(id));
 
         //    return deleteResult.Match(
-        //        CustomerId => NoContent(),
+        //        Id => NoContent(),
         //        errors => Problem(errors)
         //    );
         //}

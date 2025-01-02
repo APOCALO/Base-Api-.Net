@@ -19,7 +19,7 @@ namespace Web.Api.Controllers
                 return ValidationProblem(errors);
             }
 
-            HttpContext.Items[HttpContextItemKeys.Erros] = errors;
+            HttpContext.Items[HttpContextItemKeys.Errors] = errors;
 
             return Problem(errors[0]);
         }

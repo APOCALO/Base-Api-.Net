@@ -11,7 +11,8 @@ namespace Application.Customers.Commands.CreateCustomer
             RuleFor(r => r.Country).NotEmpty().MaximumLength(24);
             RuleFor(r => r.Department).NotEmpty().MaximumLength(24);
             RuleFor(r => r.City).NotEmpty().MaximumLength(24);
-            RuleFor(r => r.Line).NotEmpty().MaximumLength(10);
+            RuleFor(r => r.StreetType).NotEmpty().MaximumLength(10);
+            RuleFor(r => r.CountryCode).NotEmpty().MaximumLength(4);
         }
     }
 }

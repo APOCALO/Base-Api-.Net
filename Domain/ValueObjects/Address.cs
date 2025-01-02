@@ -2,35 +2,54 @@
 {
     public partial record Address
     {
-        public string Country { get; init; } = string.Empty;
-        public string Department { get; init; } = string.Empty;
-        public string City { get; init; } = string.Empty;
-        public string Line { get; init; } = string.Empty;
-        public string PostalCode { get; init; } = string.Empty;
-        private static readonly List<string> LINES = new List<string> { "carrera", "calle", "diagonal" };
+        public string Country { get; private set; }
+        public string Department { get; private set; }
+        public string City { get; private set; }
+        public string StreetType { get; private set; }
+        public string StreetNumber { get; private set; }
+        public string CrossStreetNumber { get; private set; }
+        public string PropertyNumber { get; private set; }
+        public string? ZipCode { get; private set; }
 
-        public Address(string country, string line, string department, string city, string postalCode)
+        private static readonly List<string> StreetTypesCOL = new List<string> { "carrera", "calle", "diagonal", "avenida" };
+
+        public Address(string country, string streetType, string department, string city, string streetNumber, string crossStreetNumber, string propertyNumber, string? zipCode)
         {
             this.Country = country;
-            this.Line = line;
+            this.StreetType = streetType;
             this.Department = department;
             this.City = city;
-            this.PostalCode = postalCode;
+            StreetNumber = streetNumber;
+            CrossStreetNumber = crossStreetNumber;
+            PropertyNumber = propertyNumber;
+            ZipCode = zipCode;
         }
 
-        public static Address? Create(string country, string department, string city, string line, string postalCode)
+        public static Address? Create(string country, string department, string city, string streetType, string streetNumber, string crossStreetNumber, string propertyNumber, string? zipCode)
         {
-            if (string.IsNullOrEmpty(country) || string.IsNullOrEmpty(department) || string.IsNullOrEmpty(city) || !ValidateColombiaLine(line))
+            if (string.IsNullOrEmpty(country) 
+                || string.IsNullOrEmpty(department) 
+                || string.IsNullOrEmpty(city)
+                || string.IsNullOrEmpty(streetType)
+                || string.IsNullOrEmpty(streetNumber)
+                || string.IsNullOrEmpty(crossStreetNumber)
+                || string.IsNullOrEmpty(propertyNumber))
             {
                 return null;
             }
 
-            return new Address(country, line, department, city, postalCode);
+            // Validate Colombia street type
+            if (!ValidateColombiaStreetType(streetType))
+            {
+                return null;
+            }
+
+            return new Address(country, streetType, department, city, streetNumber, crossStreetNumber, propertyNumber, zipCode);
         }
 
-        private static bool ValidateColombiaLine(string line)
+        private static bool ValidateColombiaStreetType(string streetType)
         {
-            return LINES.Contains(line.ToLower());
+            return StreetTypesCOL.Contains(streetType.ToLower());
         }
     }
 }

@@ -1,34 +1,49 @@
 ﻿using Application.Common;
-using Application.Common.Interfaces;
+using Application.Interfaces;
 using AutoMapper;
 using Domain.Customers;
 using Domain.Primitives;
 using Domain.ValueObjects;
 using ErrorOr;
 using MediatR;
-using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Customers.Commands.CreateCustomer
 {
-    internal sealed class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, ErrorOr<ApiResponse<Unit>>>
+    internal sealed class CreateCustomerCommandHandler : ApiBaseHandler<CreateCustomerCommand, ErrorOr<ApiResponse<Unit>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ICustomerRepository _customerRepository;
 
-        public CreateCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICustomerRepository customerRepository)
+        public CreateCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICustomerRepository customerRepository, ILogger<CreateCustomerCommandHandler> logger)
+            : base(logger)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
         }
 
-        public async Task<ErrorOr<ApiResponse<Unit>>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        protected override async Task<ErrorOr<ApiResponse<Unit>>> HandleRequest(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            var stopwatch = Stopwatch.StartNew();
-
-            if (Address.Create(request.Country, request.Department, request.City, request.Line, request.PostalCode) is not Address address)
+            if (PhoneNumber.Create(request.PhoneNumber, request.CountryCode) is not PhoneNumber phoneNumber)
             {
+                _logger.LogWarning("Invalid phone number format for {PhoneNumber} in {CountryCode}.", request.PhoneNumber, request.CountryCode);
+                return Error.Validation("CreateCustomer.PhoneNumber", "PhoneNumber has not valid format.");
+            }
+
+            if (Address.Create(request.Country, request.Department, request.City, request.StreetType, request.StreetNumber, request.CrossStreetNumber, request.PropertyNumber, request.ZipCode) is not Address address)
+            {
+                _logger.LogWarning("Invalid address format for {Country} {Department} {City} {StreetType} {StreetNumber} {CrossStreetNumber} {PropertyNumber} {ZipCode}.", 
+                    request.Country, 
+                    request.Department, 
+                    request.City, 
+                    request.StreetType, 
+                    request.StreetNumber, 
+                    request.CrossStreetNumber, 
+                    request.PropertyNumber, 
+                    request.ZipCode);
+
                 return Error.Validation("CreateCustomer.Address", "Address has not valid format.");
             }
 
@@ -38,12 +53,7 @@ namespace Application.Customers.Commands.CreateCustomer
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            stopwatch.Stop();
-
-            var response = new ApiResponse<Unit>(Unit.Value, true)
-            {
-                ResponseTime = stopwatch.Elapsed.TotalMilliseconds
-            };
+            var response = new ApiResponse<Unit>(Unit.Value, true);
 
             return response;
         }

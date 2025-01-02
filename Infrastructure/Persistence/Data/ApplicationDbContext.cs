@@ -1,5 +1,6 @@
 ﻿using Domain.Customers;
 using Domain.Primitives;
+using Domain.Reservations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -10,7 +11,8 @@ namespace Infrastructure.Persistence.Data
     {
         private readonly IPublisher _publisher;
 
-        public DbSet<Customer> Event { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        //public DbSet<Reservation> Reservations { get; set; }
 
         public ApplicationDbContext(DbContextOptions dbContextOptions, IPublisher publisher) : base(dbContextOptions)
         {
@@ -22,6 +24,7 @@ namespace Infrastructure.Persistence.Data
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 
+        // Se implementa el método SaveChangesAsync de la interfaz IUnitOfWork donde se publican los eventos de dominio
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             var domainEvents = ChangeTracker.Entries<AggregateRoot>()
@@ -33,7 +36,7 @@ namespace Infrastructure.Persistence.Data
 
             foreach (var domainEvent in domainEvents)
             {
-                await _publisher.Publish(domainEvent);
+                await _publisher.Publish(domainEvent, cancellationToken);
             }
 
             return result;

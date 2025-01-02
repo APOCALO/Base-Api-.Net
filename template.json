@@ -6,7 +6,7 @@
     "Microservices",
     "Domain-Driven Design (DDD)",
     "Command And Query Responsibility Segregation (CQRS)",
-    ".NET 8",
+    ".NET 9",
     "API",
     "MediatR",
     "AutoMapper",
@@ -15,21 +15,15 @@
     "FluentValidation",
     "ErrorOr",
     "MSTest",
-    "Unit Test"
+    "Unit Test",
+    "Swagger",
+    "Serilog"
   ],
   "identity": "ScaffoldingMS",
   "name": "Scaffolding Microservices API Template",
   "shortName": "scaffoldingms",
   "sourceName": "ScaffoldingMS",
   "preferNameDirectory": true,
-  "tags": [
-    "Microservices",
-    "API Template",
-    "Clean Architecture",
-    "DDD",
-    "C#",
-    "Scaffolding"
-  ],
   "symbols": {
     "ApiName": {
       "type": "parameter",

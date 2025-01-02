@@ -1,39 +1,65 @@
 ﻿using Application.Common;
-using Application.Common.Interfaces;
+using Application.Extensions;
+using Application.Interfaces;
 using Domain.Customers;
+using ErrorOr;
+using Infrastructure.Persistence.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    internal class CustomerRepository : ICustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
-        public Task AddAsync(Customer customer, CancellationToken cancellationToken)
+        private readonly ApplicationDbContext _dbContext;
+
+        public CustomerRepository(ApplicationDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        }
+
+        public async Task AddAsync(Customer customer, CancellationToken cancellationToken)
+        {
+            await _dbContext.Customers.AddAsync(customer, cancellationToken);
         }
 
         public void Delete(Customer customer)
         {
-            throw new NotImplementedException();
+            _dbContext.Customers.Remove(customer);
         }
 
-        public Task<bool> ExistsAsync(CustomerId customerId, CancellationToken cancellationToken)
+        public async Task<bool> ExistsAsync(CustomerId customerId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Customers.AnyAsync(c => c.Id == customerId, cancellationToken);
         }
 
-        public Task<(IEnumerable<Customer>, int totalCount)> GetAllPagedAsync(PaginationParameters paginationParameters, CancellationToken cancellationToken)
+        public async Task<(List<Customer>, int totalCount)> GetAllPagedAsync(PaginationParameters paginationParameters, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var totalCount = await _dbContext.Customers.CountAsync(cancellationToken);
+
+            var customers = await _dbContext.Customers
+                .AsQueryable()
+                .Paginate(paginationParameters)
+                .ToListAsync(cancellationToken);
+
+            return (customers, totalCount);
         }
 
-        public Task<Customer?> GetByIdAsync(CustomerId customerId, CancellationToken cancellationToken)
+        public async Task<Customer?> GetByIdAsync(CustomerId customerId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Customers.SingleOrDefaultAsync(c => c.Id == customerId, cancellationToken);
         }
 
         public void Update(Customer customer)
         {
-            throw new NotImplementedException();
+            if (customer == null)
+            {
+                Error.Validation("CustomerRepository.Update", "customer cannot be null.");
+                return;
+            }
+
+            // Marca la entidad como modificada en el contexto
+            _dbContext.Customers.Attach(customer);
+            _dbContext.Entry(customer).State = EntityState.Modified;
         }
     }
 }
