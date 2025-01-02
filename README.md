@@ -1,5 +1,5 @@
 
-# 🌐 Proyecto Scaffold API .NET 8 para Microservicios
+# 🌐 Proyecto Scaffold API .NET 9 para Microservicios
 
 ![Plataforma](https://img.shields.io/badge/platform-.NET%208-blueviolet)
 ![Licencia](https://img.shields.io/badge/license-MIT-green)
@@ -7,7 +7,7 @@
 ![DDD](https://img.shields.io/badge/pattern-DDD-orange)
 ![MediatR](https://img.shields.io/badge/tool-MediatR-red)
 
-> **Proyecto de andamiaje de API eficiente para crear microservicios con .NET 8, aprovechando la arquitectura limpia, el diseño orientado al dominio (DDD) y MediatR**. Este proyecto proporciona una base altamente extensible para crear servicios robustos y escalables teniendo en cuenta las mejores prácticas. 🎯
+> **Proyecto de andamiaje de API eficiente para crear microservicios con .NET 9, aprovechando la arquitectura limpia, el diseño orientado al dominio (DDD) y MediatR**. Este proyecto proporciona una base altamente extensible para crear servicios robustos y escalables teniendo en cuenta las mejores prácticas. 🎯
 
 ---
 
@@ -34,7 +34,7 @@ Este repositorio sirve de andamiaje para crear microservicios .NET eficientes. D
 
 ### Requisitos previos
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
 - [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (u otra base de datos compatible)
 - [Docker](https://www.docker.com/products/docker-desktop) (opcional para el desarrollo en contenedores)
 
@@ -85,7 +85,7 @@ Consulte la [Documentación de la API](#) 📄 para obtener una lista detallada 
 
 ---
 
-## 🧑‍🤝‍🧑 Contribución
+## 🧑‍🤝‍�?Contribución
 
 Las contribuciones son bienvenidas. Si desea contribuir a este proyecto, por favor:
 

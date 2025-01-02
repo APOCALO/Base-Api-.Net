@@ -63,19 +63,19 @@ namespace Infrastructure.Persistence.Configurations
 
                 addressBuilder.Property(a => a.StreetType)
                     .HasMaxLength(20)
-                    .IsRequired(false);
+                    .IsRequired();
 
                 addressBuilder.Property(a => a.StreetNumber)
                     .HasMaxLength(20)
-                    .IsRequired(false);
+                    .IsRequired();
 
                 addressBuilder.Property(a => a.CrossStreetNumber)
                     .HasMaxLength(20)
-                    .IsRequired(false);
+                    .IsRequired();
 
                 addressBuilder.Property(a => a.PropertyNumber)
                     .HasMaxLength(20)
-                    .IsRequired(false);
+                    .IsRequired();
 
                 addressBuilder.Property(a => a.ZipCode)
                     .HasMaxLength(20)

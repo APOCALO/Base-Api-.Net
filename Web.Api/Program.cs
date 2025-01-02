@@ -27,6 +27,7 @@ if (app.Environment.IsDevelopment())
 // Add the custom exception handler
 app.UseExceptionHandler("/api/errors");
 
+// Endpoint for health checks
 app.UseHealthChecks("/api/health");
 
 app.UseHttpsRedirection();
