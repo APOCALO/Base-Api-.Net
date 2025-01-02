@@ -1,7 +1,7 @@
 
 # 🌐 Proyecto Scaffold API .NET 9 para Microservicios.
 
-![Plataforma](https://img.shields.io/badge/platform-.NET%208-blueviolet)
+![Plataforma](https://img.shields.io/badge/platform-.NET%209-blueviolet)
 ![Licencia](https://img.shields.io/badge/license-MIT-green)
 ![Arquitectura limpia](https://img.shields.io/badge/architecture-clean-blue)
 ![DDD](https://img.shields.io/badge/pattern-DDD-orange)
