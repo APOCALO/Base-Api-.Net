@@ -1,11 +1,12 @@
-﻿using MediatR;
+﻿using ErrorOr;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace Application.Common
 {
-    public abstract class ApiBaseHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+    public abstract class ApiBaseHandler<TRequest, TResponse> : IRequestHandler<TRequest, ErrorOr<ApiResponse<TResponse>>>
+        where TRequest : IRequest<ErrorOr<ApiResponse<TResponse>>>
     {
         protected readonly ILogger<ApiBaseHandler<TRequest, TResponse>> _logger;
 
@@ -14,24 +15,32 @@ namespace Application.Common
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<ApiResponse<TResponse>>> Handle(TRequest request, CancellationToken cancellationToken)
         {
             var stopwatch = Stopwatch.StartNew();
 
-            // Log Inicio de la gestión de solicitudes
+            // Log inicio de la gestión de solicitudes
             _logger.LogInformation("Handling {RequestName} with request: {@Request}", typeof(TRequest).Name, request);
 
-            TResponse response;
+            ErrorOr<ApiResponse<TResponse>> response;
             try
             {
                 // Llamar a la implementación específica de la clase derivada
                 response = await HandleRequest(request, cancellationToken);
+
+                // Asignar el tiempo de respuesta
+                response.Value.ResponseTime = stopwatch.Elapsed.TotalMilliseconds;
+
+                // Log de finalización exitosa de la solicitud
+                _logger.LogInformation("{RequestName} processed successfully with response: {@Response}", typeof(TRequest).Name, response.Value);
             }
             catch (Exception ex)
             {
                 // Log los errores que puedan producirse
                 _logger.LogError(ex, "An error occurred while handling {RequestName}", typeof(TRequest).Name);
-                throw;
+
+                // Retornar un error genérico
+                return Error.Failure($"An unexpected error occurred: {ex.Message}");
             }
             finally
             {
@@ -40,16 +49,10 @@ namespace Application.Common
                 _logger.LogInformation("{RequestName} completed in {ElapsedTime} ms.", typeof(TRequest).Name, stopwatch.Elapsed.TotalMilliseconds);
             }
 
-            // Si el tipo de respuesta es ApiResponse, incluya el ResponseTime
-            if (response is ApiResponse<TResponse> apiResponse)
-            {
-                apiResponse.ResponseTime = stopwatch.Elapsed.TotalMilliseconds;
-            }
-
             return response;
         }
 
         // Método abstracto que debe implementar la clase derivada
-        protected abstract Task<TResponse> HandleRequest(TRequest request, CancellationToken cancellationToken);
+        protected abstract Task<ErrorOr<ApiResponse<TResponse>>> HandleRequest(TRequest request, CancellationToken cancellationToken);
     }
 }

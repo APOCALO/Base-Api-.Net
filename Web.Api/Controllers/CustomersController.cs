@@ -1,4 +1,6 @@
-﻿using Application.Customers.Commands.CreateCustomer;
+﻿using Application.Common;
+using Application.Customers.Commands.CreateCustomer;
+using Application.Customers.Queries.GetAllCustomersPaged;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +9,7 @@ namespace Web.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class CustomersController : ApiBaseController
     {
         private readonly ISender _mediator;
@@ -17,16 +19,16 @@ namespace Web.Api.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetAllCustomersPagedAsync([FromQuery] PaginationParameters pagination)
-        //{
-        //    var result = await _mediator.Send(new GetAllCustomersPagedAsyncQuery(pagination));
+        [HttpGet]
+        public async Task<IActionResult> GetAllCustomersPagedAsync([FromQuery] PaginationParameters pagination)
+        {
+            var result = await _mediator.Send(new GetAllCustomersPagedAsyncQuery(pagination));
 
-        //    return result.Match(
-        //        customers => Ok(customers),
-        //        errors => Problem(errors)
-        //    );
-        //}
+            return result.Match(
+                customers => Ok(customers),
+                errors => Problem(errors)
+            );
+        }
 
         //[HttpGet("{id}")]
         //public async Task<IActionResult> GetByIdAsync(Guid id)

@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Customers.Commands.CreateCustomer
 {
-    internal sealed class CreateCustomerCommandHandler : ApiBaseHandler<CreateCustomerCommand, ErrorOr<ApiResponse<Unit>>>
+    internal sealed class CreateCustomerCommandHandler : ApiBaseHandler<CreateCustomerCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
