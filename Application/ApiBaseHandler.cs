@@ -27,14 +27,14 @@ namespace Application.Common
             // Llamar a la implementación específica de la clase derivada
             response = await HandleRequest(request, cancellationToken);
 
-            // Asignar el tiempo de respuesta
-            response.Value.ResponseTime = stopwatch.Elapsed.TotalMilliseconds;
-
             // Log de finalización exitosa de la solicitud
             _logger.LogInformation("{RequestName} processed successfully with response: {@Response}", typeof(TRequest).Name, response.Value);
 
             // Parar el cronómetro y registrar el tiempo transcurrido
             stopwatch.Stop();
+
+            // Asignar el tiempo de respuesta
+            response.Value.ResponseTime = stopwatch.Elapsed.TotalMilliseconds;
 
             return response;
         }
