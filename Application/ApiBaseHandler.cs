@@ -23,31 +23,18 @@ namespace Application.Common
             _logger.LogInformation("Handling {RequestName} with request: {@Request}", typeof(TRequest).Name, request);
 
             ErrorOr<ApiResponse<TResponse>> response;
-            try
-            {
-                // Llamar a la implementación específica de la clase derivada
-                response = await HandleRequest(request, cancellationToken);
 
-                // Asignar el tiempo de respuesta
-                response.Value.ResponseTime = stopwatch.Elapsed.TotalMilliseconds;
+            // Llamar a la implementación específica de la clase derivada
+            response = await HandleRequest(request, cancellationToken);
 
-                // Log de finalización exitosa de la solicitud
-                _logger.LogInformation("{RequestName} processed successfully with response: {@Response}", typeof(TRequest).Name, response.Value);
-            }
-            catch (Exception ex)
-            {
-                // Log los errores que puedan producirse
-                _logger.LogError(ex, "An error occurred while handling {RequestName}", typeof(TRequest).Name);
+            // Asignar el tiempo de respuesta
+            response.Value.ResponseTime = stopwatch.Elapsed.TotalMilliseconds;
 
-                // Retornar un error genérico
-                return Error.Failure($"An unexpected error occurred: {ex.Message}");
-            }
-            finally
-            {
-                // Parar el cronómetro y registrar el tiempo transcurrido
-                stopwatch.Stop();
-                _logger.LogInformation("{RequestName} completed in {ElapsedTime} ms.", typeof(TRequest).Name, stopwatch.Elapsed.TotalMilliseconds);
-            }
+            // Log de finalización exitosa de la solicitud
+            _logger.LogInformation("{RequestName} processed successfully with response: {@Response}", typeof(TRequest).Name, response.Value);
+
+            // Parar el cronómetro y registrar el tiempo transcurrido
+            stopwatch.Stop();
 
             return response;
         }

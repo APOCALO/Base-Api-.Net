@@ -2,6 +2,7 @@ using Application;
 using Infrastructure;
 using Web.Api;
 using Web.Api.Extensions;
+using Web.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,9 @@ app.UseHealthChecks("/api/health");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+// Add the custom exception handling middleware
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
