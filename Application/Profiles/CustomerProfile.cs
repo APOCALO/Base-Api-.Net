@@ -19,7 +19,9 @@ namespace Application.Profiles
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => Address.Create(src.Country, src.Department, src.City, src.StreetType, src.StreetNumber, src.CrossStreetNumber, src.PropertyNumber, src.ZipCode)));
 
             // Mapeo de Customer a CustomerResponseDTO
-            CreateMap<Customer, CustomerResponseDTO>();
+            CreateMap<Customer, CustomerResponseDTO>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.Value))
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber.Value));
         }
     }
 }
