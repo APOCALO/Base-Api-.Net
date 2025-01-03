@@ -8,15 +8,15 @@ services:
       - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DatabaseConnection=Data Source=LOCALHOST\\SQLEXPRESS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;Initial Catalog=ScaffoldingMS;
-    depends_on:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=MyDatabase;User=sa;Password=Password1234;
       - db
 
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
     environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: "YourPassword"
+      - ACCEPT_EULA=Y  # Acepta el EULA de Microsoft
+      - SA_PASSWORD=Password1234  # Define la contraseña para el usuario 'sa' (superusuario)
+      - MSSQL_PID=Express  # Define la edición de SQL Server (en este caso, Express)
     ports:
       - "1433:1433"

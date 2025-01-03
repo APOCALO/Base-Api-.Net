@@ -1,21 +1,24 @@
 # Etapa 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
-WORKDIR /app
+WORKDIR /src
 
 # Copiar archivos de proyecto
-COPY ["Web.Api/*.csproj", "Web.Api/"]
-COPY ["Application/*.csproj", "Application/"]
-COPY ["Domain/*.csproj", "Domain/"]
-COPY ["Infrastructure/*.csproj", "Infrastructure/"]
+COPY *.sln ./
+COPY Domain/*.csproj ./Domain/
+COPY Application/*.csproj ./Application/
+COPY Infrastructure/*.csproj ./Infrastructure/
+COPY Web.Api/*.csproj ./Web.Api/
+COPY Web.Api.Test/*.csproj ./Web.Api.Test/
 
 # Restaurar dependencias
-RUN dotnet restore "Domain.csproj"
-RUN dotnet restore "Application.csproj"
-RUN dotnet restore "Infrastructure.csproj"
-RUN dotnet restore "Web.Api.csproj"
+RUN dotnet restore
 
 # Copiar todo el código fuente
 COPY . .
+
+# Compilar el proyecto
+WORKDIR "/src/Web.Api"
+RUN dotnet build "Web.Api.csproj" -c Release -o /app/build
 
 # Publicar la aplicación para producción
 RUN dotnet publish "Web.Api.csproj" -c Release -o /app/publish --no-restore
