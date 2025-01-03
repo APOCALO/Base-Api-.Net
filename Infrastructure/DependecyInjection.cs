@@ -4,10 +4,12 @@ using Domain.Primitives;
 using Infrastructure.Persistence.Data;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Services;
+using Infrastructure.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
+using StackExchange.Redis;
 
 namespace Infrastructure
 {
@@ -17,6 +19,8 @@ namespace Infrastructure
         {
             services.AddPersistenceSQLServer(configuration);
             services.AddAzureServiceBus(configuration);
+            services.AddRedis(configuration);
+
             return services;
         }
 
@@ -42,12 +46,25 @@ namespace Infrastructure
         {
             services.AddSingleton<ServiceBusClient>(options =>
             {
-                var connectionString = configuration["ConnectionStrings:AzureServiceBus"];
+                var connectionString = configuration.GetConnectionString("AzureServiceBus");
                 return new ServiceBusClient(connectionString);
             });
 
             services.AddScoped<IMessageBusService, AzureServiceBusService>();
 
+
+            return services;
+        }
+
+        private static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton<IConnectionMultiplexer>(options =>
+            {
+                var redisSettings = configuration.GetSection("RedisSettings").Get<RedisSettings>();
+                return ConnectionMultiplexer.Connect(redisSettings!.ConnectionString);
+            });
+
+            services.AddTransient<IRedisCacheService, RedisCacheService>();
 
             return services;
         }
