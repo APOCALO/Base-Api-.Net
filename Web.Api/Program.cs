@@ -7,52 +7,39 @@ using Web.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-try
+// Add services to the container.
+builder.Services.AddApplication(builder.Configuration)
+    .AddInfrastructure(builder.Configuration)
+    .AddPresentation();
+
+var app = builder.Build();
+
+Log.Information("Application setup completed successfully.");
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    // Add services to the container.
-    builder.Services.AddApplication(builder.Configuration)
-        .AddInfrastructure(builder.Configuration)
-        .AddPresentation();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
-    var app = builder.Build();
-
-    Log.Information("Application setup completed successfully.");
-
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-
-        // Apply the database migrations
-        app.ApplyMigrations();
-    }
-
-    // Add the custom exception handler
-    app.UseExceptionHandler("/api/errors");
-
-    // Endpoint for health checks
-    app.UseHealthChecks("/api/health");
-
-    app.UseHttpsRedirection();
-
-    app.UseAuthorization();
-
-    // Add the custom exception handling middleware
-    app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
-
-    app.MapControllers();
-
-    Log.Information("Starting the application...");
-    app.Run();
+    // Apply the database migrations
+    app.ApplyMigrations();
 }
-catch (Exception ex)
-{
-    Log.Fatal(ex, "Application startup failed.");
-    throw;
-}
-finally
-{
-    Log.Information("Shutting down application...");
-    Log.CloseAndFlush();
-}
+
+// Add the custom exception handler
+app.UseExceptionHandler("/api/errors");
+
+// Endpoint for health checks
+app.UseHealthChecks("/api/health");
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+// Add the custom exception handling middleware
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
+app.MapControllers();
+
+Log.Information("Starting the application...");
+app.Run();
