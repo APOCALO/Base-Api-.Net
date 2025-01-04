@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
 WORKDIR /src
 
 # Exponer el puerto en el contenedor
-EXPOSE 7267
+EXPOSE 8080
 
 # Copiar archivos de proyecto
 COPY *.sln ./
