@@ -1,5 +1,5 @@
 # Etapa 1: Build
-FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Exponer el puerto en el contenedor
@@ -27,7 +27,7 @@ RUN dotnet build "Web.Api.csproj" -c Release -o /app/build
 RUN dotnet publish "Web.Api.csproj" -c Release -o /app/publish --no-restore
 
 # Etapa 2: Runtime
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 
 # Copiar los archivos publicados desde la etapa de build
