@@ -8,7 +8,6 @@ using Infrastructure.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RabbitMQ.Client;
 using StackExchange.Redis;
 
 namespace Infrastructure
