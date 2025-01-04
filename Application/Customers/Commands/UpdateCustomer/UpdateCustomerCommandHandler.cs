@@ -8,24 +8,28 @@ using ErrorOr;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Customers.Commands.CreateCustomer
+namespace Application.Customers.Commands.UpdateCustomer
 {
-    internal sealed class CreateCustomerCommandHandler : ApiBaseHandler<CreateCustomerCommand, Unit>
+    internal sealed class UpdateCustomerCommandHandler : ApiBaseHandler<UpdateCustomerCommand, Unit>
     {
+        private readonly ICustomerRepository _customerRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ICustomerRepository _customerRepository;
 
-        public CreateCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICustomerRepository customerRepository, ILogger<CreateCustomerCommandHandler> logger)
-            : base(logger)
+        public UpdateCustomerCommandHandler(ICustomerRepository customerRepository, IUnitOfWork unitOfWork, ILogger<UpdateCustomerCommandHandler> logger, IMapper mapper) : base(logger)
         {
+            _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
         }
 
-        protected override async Task<ErrorOr<ApiResponse<Unit>>> HandleRequest(CreateCustomerCommand request, CancellationToken cancellationToken)
+        protected async override Task<ErrorOr<ApiResponse<Unit>>> HandleRequest(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
+            if (!await _customerRepository.ExistsAsync(new CustomerId(request.Id), cancellationToken))
+            {
+                return Error.NotFound("Customer.NotFound", "The customer with the provide Id was not found.");
+            }
+
             if (PhoneNumber.Create(request.PhoneNumber, request.CountryCode) is not PhoneNumber phoneNumber)
             {
                 return Error.Validation("CreateCustomer.PhoneNumber", "PhoneNumber has not valid format.");
@@ -38,7 +42,7 @@ namespace Application.Customers.Commands.CreateCustomer
 
             var customer = _mapper.Map<Customer>(request);
 
-            await _customerRepository.AddAsync(customer, cancellationToken);
+            _customerRepository.Update(customer);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

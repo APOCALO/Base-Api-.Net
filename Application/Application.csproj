@@ -21,9 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Customers\Commands\DeleteCustomer\" />
-    <Folder Include="Customers\Commands\UpdateCustomer\" />
-    <Folder Include="Customers\Queries\GetCustomerById\" />
     <Folder Include="Reservations\" />
   </ItemGroup>
 

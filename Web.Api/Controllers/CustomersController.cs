@@ -1,8 +1,11 @@
 ﻿using Application.Common;
 using Application.Customers.Commands.CreateCustomer;
+using Application.Customers.Commands.DeleteCustomer;
+using Application.Customers.Commands.UpdateCustomer;
 using Application.Customers.Queries.GetAllCustomersPaged;
+using Application.Customers.Queries.GetCustomerById;
+using ErrorOr;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Api.Controllers
@@ -30,16 +33,16 @@ namespace Web.Api.Controllers
             );
         }
 
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetByIdAsync(Guid id)
-        //{
-        //    var result = await _mediator.Send(new GetCustomerByIdQuery(id));
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(Guid id)
+        {
+            var result = await _mediator.Send(new GetCustomerByIdQuery(id));
 
-        //    return result.Match(
-        //        customer => Ok(customer),
-        //        errors => Problem(errors)
-        //    );
-        //}
+            return result.Match(
+                customer => Ok(customer),
+                errors => Problem(errors)
+            );
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCustomerCommand command)
@@ -52,38 +55,36 @@ namespace Web.Api.Controllers
             );
         }
 
-        //[Authorize]
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCustomerCommand command)
-        //{
-        //    if (command.Id != id)
-        //    {
-        //        List<Error> errors = new()
-        //        {
-        //            Error.Validation("Customer.UpdateInvalid", "The request Id does not match with the url Id.")
-        //        };
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCustomerCommand command)
+        {
+            if (command.Id != id)
+            {
+                List<Error> errors = new()
+                {
+                    Error.Validation("Customer.UpdateInvalid", "The request Id does not match with the url Id.")
+                };
 
-        //        return Problem(errors);
-        //    }
+                return Problem(errors);
+            }
 
-        //    var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command);
 
-        //    return result.Match(
-        //        Id => NoContent(),
-        //        errors => Problem(errors)
-        //    );
-        //}
+            return result.Match(
+                Id => NoContent(),
+                errors => Problem(errors)
+            );
+        }
 
-        //[Authorize]
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(Guid id)
-        //{
-        //    var deleteResult = await _mediator.Send(new DeleteCustomerCommand(id));
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var deleteResult = await _mediator.Send(new DeleteCustomerCommand(id));
 
-        //    return deleteResult.Match(
-        //        Id => NoContent(),
-        //        errors => Problem(errors)
-        //    );
-        //}
+            return deleteResult.Match(
+                Id => NoContent(),
+                errors => Problem(errors)
+            );
+        }
     }
 }

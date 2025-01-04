@@ -1,5 +1,4 @@
-﻿using Domain.Customers;
-using Domain.ValueObjects;
+﻿using Domain.ValueObjects;
 
 namespace Application.Customers.DTOs
 {
