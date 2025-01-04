@@ -2,6 +2,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
 WORKDIR /src
 
+# Exponer el puerto en el contenedor
+EXPOSE 5000
+
 # Copiar archivos de proyecto
 COPY *.sln ./
 COPY Domain/*.csproj ./Domain/
@@ -29,9 +32,6 @@ WORKDIR /app
 
 # Copiar los archivos publicados desde la etapa de build
 COPY --from=build /app/publish .
-
-# Exponer el puerto en el contenedor
-EXPOSE 5000
 
 # Establecer el punto de entrada
 ENTRYPOINT ["dotnet", "Web.Api.dll"]

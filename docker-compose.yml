@@ -9,6 +9,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=db;Database=MyDatabase;User=sa;Password=Password1234;
+    depends_on:
       - db
 
   db:
