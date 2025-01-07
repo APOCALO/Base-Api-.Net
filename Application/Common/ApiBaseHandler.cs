@@ -9,6 +9,7 @@ namespace Application.Common
         where TRequest : IRequest<ErrorOr<ApiResponse<TResponse>>>
     {
         protected readonly ILogger<ApiBaseHandler<TRequest, TResponse>> _logger;
+        private readonly Stopwatch _stopwatch = new Stopwatch();
 
         protected ApiBaseHandler(ILogger<ApiBaseHandler<TRequest, TResponse>> logger)
         {
@@ -17,7 +18,7 @@ namespace Application.Common
 
         public async Task<ErrorOr<ApiResponse<TResponse>>> Handle(TRequest request, CancellationToken cancellationToken)
         {
-            var stopwatch = Stopwatch.StartNew();
+            _stopwatch.Start();
 
             // Log inicio de la gestión de solicitudes
             _logger.LogInformation("Handling {RequestName} with request: {@Request}", typeof(TRequest).Name, request);
@@ -28,10 +29,10 @@ namespace Application.Common
             response = await HandleRequest(request, cancellationToken);
 
             // Parar el cronómetro y registrar el tiempo transcurrido
-            stopwatch.Stop();
+            _stopwatch.Stop();
 
             // Asignar el tiempo de respuesta
-            response.Value.ResponseTime = stopwatch.Elapsed.TotalMilliseconds;
+            response.Value.ResponseTime = _stopwatch.Elapsed.TotalMilliseconds;
 
             // Log de finalización exitosa de la solicitud
             _logger.LogInformation("{RequestName} processed successfully with response: {@Response}", typeof(TRequest).Name, response.Value);
@@ -41,5 +42,8 @@ namespace Application.Common
 
         // Método abstracto que debe implementar la clase derivada
         protected abstract Task<ErrorOr<ApiResponse<TResponse>>> HandleRequest(TRequest request, CancellationToken cancellationToken);
+
+        // Método para acceder al tiempo de respuesta
+        protected double GetElapsedMilliseconds() => _stopwatch.Elapsed.TotalMilliseconds;
     }
 }
