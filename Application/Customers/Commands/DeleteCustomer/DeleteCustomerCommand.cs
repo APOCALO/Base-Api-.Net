@@ -1,10 +1,9 @@
 ﻿using Application.Common;
-using ErrorOr;
 using MediatR;
 
 namespace Application.Customers.Commands.DeleteCustomer
 {
-    public record DeleteCustomerCommand : IRequest<ErrorOr<ApiResponse<Unit>>>
+    public record DeleteCustomerCommand : BaseResponse<Unit>
     {
         public Guid Id { get; set; }
 

@@ -1,10 +1,9 @@
 ﻿using Application.Common;
-using ErrorOr;
 using MediatR;
 
 namespace Application.Customers.Commands.CreateCustomer
 {
-    public record CreateCustomerCommand : IRequest<ErrorOr<ApiResponse<Unit>>>
+    public record CreateCustomerCommand : BaseResponse<Unit>
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

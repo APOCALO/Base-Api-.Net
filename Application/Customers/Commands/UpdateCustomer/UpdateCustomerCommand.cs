@@ -1,10 +1,9 @@
 ﻿using Application.Common;
-using ErrorOr;
 using MediatR;
 
 namespace Application.Customers.Commands.UpdateCustomer
 {
-    public record UpdateCustomerCommand : IRequest<ErrorOr<ApiResponse<Unit>>>
+    public record UpdateCustomerCommand : BaseResponse<Unit>
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
