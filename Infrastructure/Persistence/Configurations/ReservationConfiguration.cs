@@ -24,6 +24,11 @@ namespace Infrastructure.Persistence.Configurations
                 customerId => customerId.Value, value => new CustomerId(value))
                 .IsRequired();
 
+            // Configurar la relación entre Reservation y Customer
+            builder.HasOne<Customer>()
+                .WithMany()
+                .HasForeignKey(c => c.CustomerId);
+
             builder.Property(c => c.CustomerName)
                 .HasMaxLength(50)
                 .IsRequired();
