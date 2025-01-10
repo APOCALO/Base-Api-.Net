@@ -3,7 +3,7 @@ using Application.Reservations.DTOs;
 
 namespace Application.Reservations.Queries.GetAllReservationsPaged
 {
-    public record GetAllReservationsPagedAsyncQuery : BaseResponse<ReservationResponseDTO>
+    public record GetAllReservationsPagedAsyncQuery : BaseResponse<IEnumerable<ReservationResponseDTO>>
     {
         public PaginationParameters Pagination { get; set; }
 

@@ -3,7 +3,7 @@ using Application.Reservations.DTOs;
 
 namespace Application.Reservations.Queries.GetReservationById
 {
-    public record GetReservationByIdQuery : BaseResponse<ReservationResponseDTO?>
+    public record GetReservationByIdQuery : BaseResponse<ReservationResponseDTO>
     {
         public Guid Id { get; set; }
 
