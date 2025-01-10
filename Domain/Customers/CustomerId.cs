@@ -1,4 +1,6 @@
-﻿namespace Domain.Customers
+﻿using Domain.Primitives;
+
+namespace Domain.Customers
 {
-    public record CustomerId(Guid Value);
+    public record CustomerId(Guid Value) : IValueObject;
 }

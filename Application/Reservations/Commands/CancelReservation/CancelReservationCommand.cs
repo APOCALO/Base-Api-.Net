@@ -5,7 +5,7 @@ namespace Application.Reservations.Commands.CancelReservation
 {
     public record CancelReservationCommand : BaseResponse<ReservationResponseDTO>
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; init; }
 
         public CancelReservationCommand(Guid id)
         {

@@ -12,11 +12,11 @@ namespace Application.Customers.Commands.UpdateCustomer
 {
     internal sealed class UpdateCustomerCommandHandler : ApiBaseHandler<UpdateCustomerCommand, Unit>
     {
-        private readonly IBaseRepository<Customer> _customerRepository;
+        private readonly IBaseRepository<Customer, CustomerId> _customerRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UpdateCustomerCommandHandler(IBaseRepository<Customer> customerRepository, IUnitOfWork unitOfWork, ILogger<UpdateCustomerCommandHandler> logger, IMapper mapper) : base(logger)
+        public UpdateCustomerCommandHandler(IBaseRepository<Customer, CustomerId> customerRepository, IUnitOfWork unitOfWork, ILogger<UpdateCustomerCommandHandler> logger, IMapper mapper) : base(logger)
         {
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
@@ -25,7 +25,7 @@ namespace Application.Customers.Commands.UpdateCustomer
 
         protected async override Task<ErrorOr<ApiResponse<Unit>>> HandleRequest(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
-            if (!await _customerRepository.ExistsAsync(new CustomerId(request.Id).Value, cancellationToken))
+            if (!await _customerRepository.ExistsAsync(new CustomerId(request.Id), cancellationToken))
             {
                 return Error.NotFound("Customer.NotFound", "The customer with the provide Id was not found.");
             }

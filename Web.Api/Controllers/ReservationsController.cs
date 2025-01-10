@@ -44,7 +44,7 @@ namespace Web.Api.Controllers
             );
         }
 
-        [HttpPost]
+        [HttpPost("")]
         public async Task<IActionResult> Create([FromBody] CreateReservationCommand command)
         {
             var result = await _mediator.Send(command);
@@ -76,8 +76,9 @@ namespace Web.Api.Controllers
             );
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> CancelReservation(Guid id)
+        [HttpPost]
+        [Route("cancel-reservation")]
+        public async Task<IActionResult> CancelReservation([FromBody] Guid id)
         {
             var result = await _mediator.Send(new CancelReservationCommand(id));
 

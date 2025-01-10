@@ -1,13 +1,16 @@
 ﻿using Application.Common;
 using Application.Extensions;
 using Application.Interfaces;
+using Domain.Primitives;
 using ErrorOr;
 using Infrastructure.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<T, TId> : IBaseRepository<T, TId>
+        where T : class
+        where TId : IValueObject
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -26,9 +29,9 @@ namespace Infrastructure.Persistence.Repositories
             _dbContext.Set<T>().Remove(entity);
         }
 
-        public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<bool> ExistsAsync(TId id, CancellationToken cancellationToken)
         {
-            return await _dbContext.Set<T>().FindAsync(new object[] { id }, cancellationToken) != null;
+            return await _dbContext.Set<T>().FindAsync(id, cancellationToken) != null;
         }
 
         public async Task<(List<T>, int totalCount)> GetAllPagedAsync(PaginationParameters paginationParameters, CancellationToken cancellationToken)
@@ -42,9 +45,9 @@ namespace Infrastructure.Persistence.Repositories
             return (entities, totalCount);
         }
 
-        public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<T?> GetByIdAsync(TId id, CancellationToken cancellationToken)
         {
-            return await _dbContext.Set<T>().FindAsync(new object[] { id }, cancellationToken);
+            return await _dbContext.Set<T>().FindAsync(id, cancellationToken);
         }
 
         public void Update(T entity)

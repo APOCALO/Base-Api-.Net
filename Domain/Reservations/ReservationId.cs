@@ -1,4 +1,6 @@
-﻿namespace Domain.Reservations
+﻿using Domain.Primitives;
+
+namespace Domain.Reservations
 {
-    public record ReservationId(Guid Value);
+    public record ReservationId(Guid Value) : IValueObject;
 }

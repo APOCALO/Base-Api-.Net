@@ -50,5 +50,11 @@ namespace Domain.Reservations
         // Fechas del servicio
         public DateTime ServiceStartDate { get; private set; }
         public DateTime ServiceEndDate { get; private set; }
+
+        public void Cancel()
+        {
+            Status = ReservationStatusEnum.Cancelled;
+            //Raise(new ReservationCancelledEvent(Id));
+        }
     }
 }

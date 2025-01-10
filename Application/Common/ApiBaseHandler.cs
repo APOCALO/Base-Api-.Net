@@ -31,11 +31,20 @@ namespace Application.Common
             // Parar el cronómetro y registrar el tiempo transcurrido
             _stopwatch.Stop();
 
-            // Asignar el tiempo de respuesta
-            response.Value.ResponseTime = _stopwatch.Elapsed.TotalMilliseconds;
+            // Verificar si la respuesta tiene valor (si no tiene error)
+            if (!response.IsError)
+            {
+                // Asignar el tiempo de respuesta si la respuesta es válida
+                response.Value.ResponseTime = _stopwatch.Elapsed.TotalMilliseconds;
 
-            // Log de finalización exitosa de la solicitud
-            _logger.LogInformation("{RequestName} processed successfully with response: {@Response}", typeof(TRequest).Name, response.Value);
+                // Log de finalización exitosa de la solicitud
+                _logger.LogInformation("{RequestName} processed successfully with response: {@Response}", typeof(TRequest).Name, response.Value);
+            }
+            else
+            {
+                // Log de error si la solicitud no fue exitosa
+                _logger.LogError("{RequestName} failed with errors: {@Errors}", typeof(TRequest).Name, response.Errors);
+            }
 
             return response;
         }

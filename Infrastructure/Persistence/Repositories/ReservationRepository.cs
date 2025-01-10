@@ -1,46 +1,30 @@
-﻿using Application.Common;
-using Application.Interfaces;
+﻿using Application.Interfaces;
+using Domain.Reservations;
+using ErrorOr;
 using Infrastructure.Persistence.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public class ReservationRepository : IReservationRepository
+    public class ReservationRepository : BaseRepository<Reservation, ReservationId>, IReservationRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public ReservationRepository(ApplicationDbContext dbContext)
+        public ReservationRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public Task AddAsync(Domain.Reservations.Reservation reservation, CancellationToken cancellationToken)
+        public void CancelReservation(Reservation reservation)
         {
-            throw new NotImplementedException();
-        }
+            if (reservation == null)
+            {
+                Error.Validation("ReservationRepository.CancelReservation", $"reservation cannot be null.");
+                return;
+            }
 
-        public void Delete(Domain.Reservations.Reservation reservation)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> ExistsAsync(Domain.Reservations.ReservationId reservationId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<(List<Domain.Reservations.Reservation>, int totalCount)> GetAllPagedAsync(PaginationParameters paginationParameters, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Domain.Reservations.Reservation?> GetByIdAsync(Domain.Reservations.ReservationId reservationId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Domain.Reservations.Reservation reservation)
-        {
-            throw new NotImplementedException();
+            _dbContext.Reservations.Attach(reservation);
+            _dbContext.Reservations.Entry(reservation).State = EntityState.Modified;
         }
     }
 }
