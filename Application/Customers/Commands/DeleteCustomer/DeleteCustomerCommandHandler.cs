@@ -10,10 +10,10 @@ namespace Application.Customers.Commands.DeleteCustomer
 {
     internal sealed class DeleteCustomerCommandHandler : ApiBaseHandler<DeleteCustomerCommand, Unit>
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly IBaseRepository<Customer> _customerRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteCustomerCommandHandler(ICustomerRepository customerRepository, IUnitOfWork unitOfWork, ILogger<DeleteCustomerCommandHandler> logger) : base(logger)
+        public DeleteCustomerCommandHandler(IBaseRepository<Customer> customerRepository, IUnitOfWork unitOfWork, ILogger<DeleteCustomerCommandHandler> logger) : base(logger)
         {
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
@@ -21,7 +21,7 @@ namespace Application.Customers.Commands.DeleteCustomer
 
         protected async override Task<ErrorOr<ApiResponse<Unit>>> HandleRequest(DeleteCustomerCommand request, CancellationToken cancellationToken)
         {
-            if (await _customerRepository.GetByIdAsync(new CustomerId(request.Id), cancellationToken) is not Customer customer)
+            if (await _customerRepository.GetByIdAsync(new CustomerId(request.Id).Value, cancellationToken) is not Customer customer)
             {
                 return Error.NotFound("DeleteCustomerCommandHandler.NotFound", "The customer with the provide Id was not found.");
             }

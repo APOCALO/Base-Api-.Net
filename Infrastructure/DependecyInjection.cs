@@ -35,7 +35,7 @@ namespace Infrastructure
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
             // Repositories dependency inyection
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
 
             return services;

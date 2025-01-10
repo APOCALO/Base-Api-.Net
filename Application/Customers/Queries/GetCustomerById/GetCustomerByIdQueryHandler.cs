@@ -11,9 +11,9 @@ namespace Application.Customers.Queries.GetCustomerById
     internal sealed class GetCustomerByIdQueryHandler : ApiBaseHandler<GetCustomerByIdQuery, CustomerResponseDTO>
     {
         private readonly IMapper _mapper;
-        private readonly ICustomerRepository _customerRepository;
+        private readonly IBaseRepository<Customer> _customerRepository;
 
-        public GetCustomerByIdQueryHandler(IMapper mapper, ICustomerRepository customerRepository, ILogger<GetCustomerByIdQueryHandler> logger) : base(logger)
+        public GetCustomerByIdQueryHandler(IMapper mapper, IBaseRepository<Customer> customerRepository, ILogger<GetCustomerByIdQueryHandler> logger) : base(logger)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
@@ -21,7 +21,7 @@ namespace Application.Customers.Queries.GetCustomerById
 
         protected async override Task<ErrorOr<ApiResponse<CustomerResponseDTO>>> HandleRequest(GetCustomerByIdQuery request, CancellationToken cancellationToken)
         {
-            if (await _customerRepository.GetByIdAsync(new CustomerId(request.Id), cancellationToken) is not Customer customer)
+            if (await _customerRepository.GetByIdAsync(new CustomerId(request.Id).Value, cancellationToken) is not Customer customer)
             {
                 return Error.NotFound("Customer.NotFound", "The customer with the provide Id was not found.");
             }

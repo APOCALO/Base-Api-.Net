@@ -12,7 +12,7 @@ namespace Infrastructure.Persistence.Data
         private readonly IPublisher _publisher;
 
         public DbSet<Customer> Customers { get; set; }
-        //public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
 
         public ApplicationDbContext(DbContextOptions dbContextOptions, IPublisher publisher) : base(dbContextOptions)
         {

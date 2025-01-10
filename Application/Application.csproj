@@ -21,7 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Reservations\" />
+    <Folder Include="Reservations\Commands\CreateReservation\" />
+    <Folder Include="Reservations\Commands\CancelReservation\" />
+    <Folder Include="Reservations\Commands\UpdateReservation\" />
+    <Folder Include="Reservations\DTOs\" />
+    <Folder Include="Reservations\Queries\GetAllReservationsPaged\" />
+    <Folder Include="Reservations\Queries\GetReservationById\" />
   </ItemGroup>
 
 </Project>

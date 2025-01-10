@@ -6,25 +6,25 @@ namespace Domain.Reservations
 {
     public sealed class Reservation : AggregateRoot
     {
-        public Reservation(ReservationId reservationId, 
+        public Reservation(ReservationId id, 
             DateTime reservationDate, 
             ReservationStatusEnum status, 
             CustomerId customerId, 
             string customerName, 
             string customerLastName, 
             string customerEmail, 
-            PhoneNumber customerPhone, 
+            PhoneNumber customerPhoneNumber, 
             DateTime serviceStartDate, 
             DateTime serviceEndDate)
         {
-            ReservationId = reservationId;
+            Id = id;
             ReservationDate = reservationDate;
             Status = status;
             CustomerId = customerId;
             CustomerName = customerName;
             CustomerLastName = customerLastName;
             CustomerEmail = customerEmail;
-            CustomerPhone = customerPhone;
+            CustomerPhoneNumber = customerPhoneNumber;
             ServiceStartDate = serviceStartDate;
             ServiceEndDate = serviceEndDate;
         }
@@ -35,7 +35,7 @@ namespace Domain.Reservations
 
         }
 
-        public ReservationId ReservationId { get; private set; }
+        public ReservationId Id { get; private set; }
         public DateTime ReservationDate { get; private set; }
         public ReservationStatusEnum Status { get; private set; }
 
@@ -45,7 +45,7 @@ namespace Domain.Reservations
         public string CustomerLastName { get; private set; }
         public string CustomerFullName => $"{CustomerName} {CustomerLastName}";
         public string CustomerEmail { get; private set; }
-        public PhoneNumber CustomerPhone { get; private set; }
+        public PhoneNumber CustomerPhoneNumber { get; private set; }
 
         // Fechas del servicio
         public DateTime ServiceStartDate { get; private set; }
