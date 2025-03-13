@@ -30,14 +30,22 @@ namespace Infrastructure.Persistence.Data
             var domainEvents = ChangeTracker.Entries<AggregateRoot>()
                 .Select(e => e.Entity)
                 .Where(e => e.GetDomainEvents().Any())
-                .SelectMany(e => e.GetDomainEvents());
-
-            var result = await base.SaveChangesAsync(cancellationToken);
+                .SelectMany(e => e.GetDomainEvents())
+                .ToList();
 
             foreach (var domainEvent in domainEvents)
             {
                 await _publisher.Publish(domainEvent, cancellationToken);
             }
+
+            var result = await base.SaveChangesAsync(cancellationToken);
+
+            // Limpiar eventos de dominio después de publicarlos
+            ChangeTracker.Entries<AggregateRoot>()
+                .Select(e => e.Entity)
+                .Where(e => e.GetDomainEvents().Any())
+                .ToList()
+                .ForEach(e => e.ClearDomainEvents());
 
             return result;
         }
