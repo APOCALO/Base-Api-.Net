@@ -37,12 +37,19 @@ namespace Infrastructure.Persistence.Repositories
         public async Task<(List<T>, int totalCount)> GetAllPagedAsync(PaginationParameters paginationParameters, CancellationToken cancellationToken)
         {
             var totalCount = await _dbContext.Set<T>().CountAsync(cancellationToken);
-            var entities = await _dbContext.Set<T>()
-                .AsQueryable()
+
+            var query = _dbContext.Set<T>().AsQueryable();
+
+            if (typeof(T).GetProperty("Id") != null)
+            {
+                query = query.OrderBy(e => EF.Property<object>(e, "Id"));
+            }
+
+            var result = await query
                 .Paginate(paginationParameters)
                 .ToListAsync(cancellationToken);
 
-            return (entities, totalCount);
+            return (result, totalCount);
         }
 
         public async Task<T?> GetByIdAsync(TId id, CancellationToken cancellationToken)
