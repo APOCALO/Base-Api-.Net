@@ -25,7 +25,7 @@ namespace Application.Customers.Commands.UpdateCustomer
 
         protected async override Task<ErrorOr<ApiResponse<Unit>>> HandleRequest(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
-            if (!await _customerRepository.ExistsAsync(new CustomerId(request.Id), cancellationToken))
+            if (await _customerRepository.GetByIdAsync(new CustomerId(request.Id), cancellationToken) is not Customer existingCustomer)
             {
                 return Error.NotFound("Customer.NotFound", "The customer with the provide Id was not found.");
             }
@@ -40,9 +40,9 @@ namespace Application.Customers.Commands.UpdateCustomer
                 return Error.Validation("CreateCustomer.Address", "Address has not valid format.");
             }
 
-            var customer = _mapper.Map<Customer>(request);
+            _mapper.Map(request, existingCustomer);
 
-            _customerRepository.Update(customer);
+            _customerRepository.Update(existingCustomer);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -29,11 +29,6 @@ namespace Infrastructure.Persistence.Repositories
             _dbContext.Set<T>().Remove(entity);
         }
 
-        public async Task<bool> ExistsAsync(TId id, CancellationToken cancellationToken)
-        {
-            return await _dbContext.Set<T>().FindAsync(id, cancellationToken) != null;
-        }
-
         public async Task<(List<T>, int totalCount)> GetAllPagedAsync(PaginationParameters paginationParameters, CancellationToken cancellationToken)
         {
             var totalCount = await _dbContext.Set<T>().CountAsync(cancellationToken);
@@ -65,7 +60,6 @@ namespace Infrastructure.Persistence.Repositories
                 return;
             }
 
-            _dbContext.Set<T>().Attach(entity);
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
     }
