@@ -11,9 +11,9 @@ namespace Application.Customers.Queries.GetAllCustomersPaged
     internal sealed class GetAllCustomersPagedAsyncQueryHandler : ApiBaseHandler<GetAllCustomersPagedAsyncQuery, IEnumerable<CustomerResponseDTO>>
     {
         private readonly IMapper _mapper;
-        private readonly IBaseRepository<Customer, CustomerId> _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public GetAllCustomersPagedAsyncQueryHandler(IMapper mapper, IBaseRepository<Customer, CustomerId> customerRepository, ILogger<GetAllCustomersPagedAsyncQueryHandler> logger) : base(logger)
+        public GetAllCustomersPagedAsyncQueryHandler(IMapper mapper, ICustomerRepository customerRepository, ILogger<GetAllCustomersPagedAsyncQueryHandler> logger) : base(logger)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));

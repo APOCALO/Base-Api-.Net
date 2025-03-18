@@ -1,15 +1,8 @@
-﻿using Application.Common;
-using Domain.Customers;
+﻿using Domain.Customers;
 
 namespace Application.Interfaces
 {
-    public interface ICustomerRepository
+    public interface ICustomerRepository : IBaseRepository<Customer, CustomerId>
     {
-        Task<(List<Customer>, int totalCount)> GetAllPagedAsync(PaginationParameters paginationParameters, CancellationToken cancellationToken);
-        Task<Customer?> GetByIdAsync(CustomerId customerId, CancellationToken cancellationToken);
-        Task<bool> ExistsAsync(CustomerId customerId, CancellationToken cancellationToken);
-        Task AddAsync(Customer customer, CancellationToken cancellationToken);
-        void Update(Customer customer);
-        void Delete(Customer customer);
     }
 }

@@ -10,10 +10,10 @@ namespace Application.Customers.Commands.DeleteCustomer
 {
     internal sealed class DeleteCustomerCommandHandler : ApiBaseHandler<DeleteCustomerCommand, Unit>
     {
-        private readonly IBaseRepository<Customer, CustomerId> _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteCustomerCommandHandler(IBaseRepository<Customer, CustomerId> customerRepository, IUnitOfWork unitOfWork, ILogger<DeleteCustomerCommandHandler> logger) : base(logger)
+        public DeleteCustomerCommandHandler(ICustomerRepository customerRepository, IUnitOfWork unitOfWork, ILogger<DeleteCustomerCommandHandler> logger) : base(logger)
         {
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));

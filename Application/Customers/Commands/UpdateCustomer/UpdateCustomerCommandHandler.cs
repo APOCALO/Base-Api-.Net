@@ -12,11 +12,11 @@ namespace Application.Customers.Commands.UpdateCustomer
 {
     internal sealed class UpdateCustomerCommandHandler : ApiBaseHandler<UpdateCustomerCommand, Unit>
     {
-        private readonly IBaseRepository<Customer, CustomerId> _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UpdateCustomerCommandHandler(IBaseRepository<Customer, CustomerId> customerRepository, IUnitOfWork unitOfWork, ILogger<UpdateCustomerCommandHandler> logger, IMapper mapper) : base(logger)
+        public UpdateCustomerCommandHandler(ICustomerRepository customerRepository, IUnitOfWork unitOfWork, ILogger<UpdateCustomerCommandHandler> logger, IMapper mapper) : base(logger)
         {
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));

@@ -14,9 +14,9 @@ namespace Application.Customers.Commands.CreateCustomer
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IBaseRepository<Customer, CustomerId> _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public CreateCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IBaseRepository<Customer, CustomerId> customerRepository, ILogger<CreateCustomerCommandHandler> logger)
+        public CreateCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICustomerRepository customerRepository, ILogger<CreateCustomerCommandHandler> logger)
             : base(logger)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));

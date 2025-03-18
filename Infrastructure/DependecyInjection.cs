@@ -36,6 +36,7 @@ namespace Infrastructure
 
             // Repositories dependency inyection
             services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
 
 

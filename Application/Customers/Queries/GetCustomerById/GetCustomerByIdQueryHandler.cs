@@ -11,9 +11,9 @@ namespace Application.Customers.Queries.GetCustomerById
     internal sealed class GetCustomerByIdQueryHandler : ApiBaseHandler<GetCustomerByIdQuery, CustomerResponseDTO>
     {
         private readonly IMapper _mapper;
-        private readonly IBaseRepository<Customer, CustomerId> _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public GetCustomerByIdQueryHandler(IMapper mapper, IBaseRepository<Customer, CustomerId> customerRepository, ILogger<GetCustomerByIdQueryHandler> logger) : base(logger)
+        public GetCustomerByIdQueryHandler(IMapper mapper, ICustomerRepository customerRepository, ILogger<GetCustomerByIdQueryHandler> logger) : base(logger)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
