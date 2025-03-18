@@ -2,11 +2,14 @@
 using Application.Customers.Commands.CreateCustomer;
 using Application.Customers.Commands.DeleteCustomer;
 using Application.Customers.Commands.UpdateCustomer;
+using Application.Customers.DTOs;
 using Application.Customers.Queries.GetAllCustomersPaged;
 using Application.Customers.Queries.GetCustomerById;
+using Domain.Customers;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace Web.Api.Controllers
 {
@@ -28,6 +31,9 @@ namespace Web.Api.Controllers
         /// <param name="pagination">Pagination parameters</param>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(List<CustomerResponseDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllCustomersPagedAsync([FromQuery] PaginationParameters pagination)
         {
             var result = await _mediator.Send(new GetAllCustomersPagedAsyncQuery(pagination));
@@ -39,6 +45,9 @@ namespace Web.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(CustomerResponseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var result = await _mediator.Send(new GetCustomerByIdQuery(id));
@@ -50,6 +59,9 @@ namespace Web.Api.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(CustomerResponseDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Create([FromBody] CreateCustomerCommand command)
         {
             var result = await _mediator.Send(command);
@@ -61,6 +73,9 @@ namespace Web.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(Unit), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCustomerCommand command)
         {
             if (command.Id != id)
@@ -82,6 +97,9 @@ namespace Web.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(Unit), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Delete(Guid id)
         {
             var deleteResult = await _mediator.Send(new DeleteCustomerCommand(id));
