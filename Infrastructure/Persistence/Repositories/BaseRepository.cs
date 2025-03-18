@@ -30,18 +30,11 @@ namespace Infrastructure.Persistence.Repositories
             _dbContext.Set<T>().Remove(entity);
         }
 
-        public async Task<List<T>> FindByPropertyAsync(string propertyName, object value, CancellationToken cancellationToken)
+        public async Task<List<T>> FindByConditionAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
         {
-            var parameter = Expression.Parameter(typeof(T), "x");
-            var property = Expression.Property(parameter, propertyName);
-
-            var constant = Expression.Constant(value);
-            var convertedConstant = Expression.Convert(constant, property.Type); // Convierte al tipo correcto
-            var equalExpression = Expression.Equal(property, convertedConstant);
-
-            var lambda = Expression.Lambda<Func<T, bool>>(equalExpression, parameter);
-
-            return await _dbContext.Set<T>().Where(lambda).ToListAsync(cancellationToken);
+            return await _dbContext.Set<T>()
+                .Where(predicate)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<(List<T>, int totalCount)> GetAllPagedAsync(PaginationParameters paginationParameters, CancellationToken cancellationToken)
