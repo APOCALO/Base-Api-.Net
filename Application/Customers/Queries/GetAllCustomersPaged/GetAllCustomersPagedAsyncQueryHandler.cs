@@ -2,7 +2,6 @@
 using Application.Customers.DTOs;
 using Application.Interfaces;
 using AutoMapper;
-using Domain.Customers;
 using ErrorOr;
 using Microsoft.Extensions.Logging;
 
