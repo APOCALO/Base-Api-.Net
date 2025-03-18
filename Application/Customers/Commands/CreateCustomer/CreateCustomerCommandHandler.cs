@@ -38,6 +38,9 @@ namespace Application.Customers.Commands.CreateCustomer
 
             var customer = _mapper.Map<Customer>(request);
 
+            // Publish event domain
+            customer.RaiseCustomerCreatedEvent(Guid.NewGuid(), customer.Id, customer.Name, customer.Email);
+
             await _customerRepository.AddAsync(customer, cancellationToken);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
