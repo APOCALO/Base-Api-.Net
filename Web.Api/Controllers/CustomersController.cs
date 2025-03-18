@@ -23,7 +23,7 @@ namespace Web.Api.Controllers
         }
 
         /// <summary>
-        /// Get all customers paginated
+        /// Retrieve all customers paginated
         /// </summary>
         /// <param name="pagination">Pagination parameters</param>
         /// <returns></returns>
