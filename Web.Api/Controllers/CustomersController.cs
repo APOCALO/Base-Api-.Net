@@ -5,11 +5,9 @@ using Application.Customers.Commands.UpdateCustomer;
 using Application.Customers.DTOs;
 using Application.Customers.Queries.GetAllCustomersPaged;
 using Application.Customers.Queries.GetCustomerById;
-using Domain.Customers;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 
 namespace Web.Api.Controllers
 {
