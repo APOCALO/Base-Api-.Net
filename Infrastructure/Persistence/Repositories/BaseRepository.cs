@@ -5,6 +5,7 @@ using Domain.Primitives;
 using ErrorOr;
 using Infrastructure.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -27,6 +28,20 @@ namespace Infrastructure.Persistence.Repositories
         public void Delete(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
+        }
+
+        public async Task<List<T>> FindByPropertyAsync(string propertyName, object value, CancellationToken cancellationToken)
+        {
+            var parameter = Expression.Parameter(typeof(T), "x");
+            var property = Expression.Property(parameter, propertyName);
+
+            var constant = Expression.Constant(value);
+            var convertedConstant = Expression.Convert(constant, property.Type); // Convierte al tipo correcto
+            var equalExpression = Expression.Equal(property, convertedConstant);
+
+            var lambda = Expression.Lambda<Func<T, bool>>(equalExpression, parameter);
+
+            return await _dbContext.Set<T>().Where(lambda).ToListAsync(cancellationToken);
         }
 
         public async Task<(List<T>, int totalCount)> GetAllPagedAsync(PaginationParameters paginationParameters, CancellationToken cancellationToken)
