@@ -1,4 +1,5 @@
-﻿using Web.Api.Middlewares;
+﻿using System.Reflection;
+using Web.Api.Middlewares;
 
 namespace Web.Api
 {
@@ -9,7 +10,11 @@ namespace Web.Api
             services.AddControllers();
 
             // Add Swagger
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            });
 
             // Agregamos endpoint de salud /health
             services.AddHealthChecks();

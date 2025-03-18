@@ -22,6 +22,11 @@ namespace Web.Api.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        /// <summary>
+        /// Get all customers paginated
+        /// </summary>
+        /// <param name="pagination">Pagination parameters</param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetAllCustomersPagedAsync([FromQuery] PaginationParameters pagination)
         {
