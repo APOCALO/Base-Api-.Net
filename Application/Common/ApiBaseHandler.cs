@@ -20,9 +20,6 @@ namespace Application.Common
         {
             _stopwatch.Start();
 
-            // Log inicio de la gestión de solicitudes
-            _logger.LogInformation("Handling {RequestName} with request: {@Request}", typeof(TRequest).Name, request);
-
             ErrorOr<ApiResponse<TResponse>> response;
 
             // Llamar a la implementación específica de la clase derivada
@@ -36,9 +33,6 @@ namespace Application.Common
             {
                 // Asignar el tiempo de respuesta si la respuesta es válida
                 response.Value.ResponseTime = _stopwatch.Elapsed.TotalMilliseconds;
-
-                // Log de finalización exitosa de la solicitud
-                _logger.LogInformation("{RequestName} processed successfully with response: {@Response}", typeof(TRequest).Name, response.Value);
             }
             else
             {
