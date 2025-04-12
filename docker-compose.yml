@@ -1,6 +1,8 @@
 version: "3.9"
+
 services:
   api:
+    container_name: ScaffoldingMS
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,16 +10,32 @@ services:
       - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=db;Database=MyDatabase;User=sa;Password=Password1234;
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=ScaffoldingMS;Username=myuser;Password=mypassword;
     depends_on:
-      - db
+      - postgres
 
-  db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
     environment:
-      - ACCEPT_EULA=Y  # Acepta el EULA de Microsoft
-      - SA_PASSWORD=Password1234  # Define la contraseña para el usuario 'sa' (superusuario)
-      - MSSQL_PID=Express  # Define la edición de SQL Server (en este caso, Express)
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: ScaffoldingMS
     ports:
-      - "1433:1433"
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
