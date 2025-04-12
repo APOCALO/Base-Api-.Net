@@ -16,29 +16,28 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddPersistenceSQLServer(configuration);
+            services.AddPersistencePostgreSQL(configuration);
             services.AddAzureServiceBus(configuration);
             services.AddRedis(configuration);
 
             return services;
         }
 
-        private static IServiceCollection AddPersistenceSQLServer(this IServiceCollection services, IConfiguration configuration)
+        private static IServiceCollection AddPersistencePostgreSQL(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(optionsBuilder =>
             {
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DatabaseConnection"), options => options.EnableRetryOnFailure());
+                optionsBuilder.UseNpgsql(configuration.GetConnectionString("DatabaseConnection"),
+                    options => options.EnableRetryOnFailure());
             });
 
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
-
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
-            // Repositories dependency inyection
+            // Repositories dependency injection
             services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
-
 
             return services;
         }

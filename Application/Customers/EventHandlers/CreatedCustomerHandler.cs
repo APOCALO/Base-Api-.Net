@@ -17,7 +17,7 @@ namespace Application.Customers.EventHandlers
         {
             _logger.LogInformation("Handling {RequestName} with event: {@Notification}", typeof(CreatedCustomerEvent).Name, notification);
 
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }
