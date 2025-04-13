@@ -8,6 +8,7 @@ using Infrastructure.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Minio;
 using StackExchange.Redis;
 
 namespace Infrastructure
@@ -19,6 +20,7 @@ namespace Infrastructure
             services.AddPersistencePostgreSQL(configuration);
             services.AddAzureServiceBus(configuration);
             services.AddRedis(configuration);
+            services.AddMinio(configuration);
 
             return services;
         }
@@ -60,11 +62,36 @@ namespace Infrastructure
         {
             services.AddSingleton<IConnectionMultiplexer>(options =>
             {
-                var redisSettings = configuration.GetSection("RedisSettings").Get<RedisSettings>();
+                var redisSettings = configuration.GetSection("RedisSettings").Get<RedisSettings>()
+                    ?? throw new InvalidOperationException("RedisSettings configuration section is missing or invalid.");
                 return ConnectionMultiplexer.Connect(redisSettings!.ConnectionString);
             });
 
             services.AddTransient<IRedisCacheService, RedisCacheService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddMinio(this IServiceCollection services, IConfiguration configuration)
+        {
+            var minioSettings = configuration.GetSection("MinioSettings").Get<MinioSettings>() 
+                ?? throw new InvalidOperationException("MinioSettings configuration section is missing or invalid.");
+
+            services.AddSingleton(minioSettings!);
+
+            services.AddSingleton<IMinioClient>(sp =>
+            {
+                return new MinioClient()
+                    .WithEndpoint(minioSettings!.Endpoint)
+                    .WithCredentials(minioSettings.AccessKey, minioSettings.SecretKey)
+                    .Build();
+            });
+
+            // (opcional) Podrías registrar también un servicio que use MinioClient aquí
+            services.AddTransient<IFileStorageService, MinioFileStorageService>();
+
+            // (opcional) Podrías registrar un servicio para inicializar el bucket de Minio
+            services.AddHostedService<MinioBucketInitializerService>();
 
             return services;
         }

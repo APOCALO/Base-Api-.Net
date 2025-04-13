@@ -2,7 +2,7 @@
 {
     public class RedisSettings
     {
-        public string ConnectionString { get; set; }
-        public int DefaultDatabase { get; set; }
+        public string ConnectionString { get; set; } = default!;
+        public int DefaultDatabase { get; set; } = default!;
     }
 }
